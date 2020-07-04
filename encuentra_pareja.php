@@ -46,7 +46,7 @@ include "head.html";
                             // En fila estará la consulta.
                             while ($fila = mysqli_fetch_assoc($resultado)) {
                                 if (empty($fila))  echo "Vacio";
-                                else echo "Tiene contenido";
+                                else echo "Tiene contenido"; 
 
 
                                 $id_quien_gusta = $fila['id'];
