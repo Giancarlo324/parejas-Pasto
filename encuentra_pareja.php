@@ -45,13 +45,13 @@ include "head.html";
                             }
                             // En fila estará la consulta.
                             while ($fila = mysqli_fetch_assoc($resultado)) {
-                                if (empty($fila))  echo "Vacio";
-                                else echo "Tiene contenido"; 
+                                // if (empty($fila))  echo "Vacio";
+                                // else echo "Tiene contenido";
 
 
                                 $id_quien_gusta = $fila['id'];
-                                // Verifico si el perfil que aparece ya le di me gusta.
-                                $validarMeGusta = "SELECT * FROM megusta WHERE (id_usuario = $myId and quien_gusta = $id_quien_gusta)";
+                                // Verifico si el perfil que aparece ya le di me gusta o no me gusta.
+                                $validarMeGusta = "SELECT * FROM megusta WHERE (id_usuario = $myId and (quien_gusta = $id_quien_gusta or no_gusta = $id_quien_gusta))";
                                 $resultado2 = mysqli_query($conexion, $validarMeGusta);
                                 $totalFilas = mysqli_num_rows($resultado2);
                                 if ($totalFilas == 0) { // Si no le he dado me gusta, hago que aparezcan sus datos.
@@ -75,7 +75,6 @@ include "head.html";
 
                                 <button type="submit" name="boton" value="<?php echo $fila['id']; ?>">Me gusta</button>
                                 <button type="submit" name="boton2" value="<?php echo $fila['id']; ?>">No me gusta</button>
-                                <button type="submit" name="boton3" value="boton3">Siguiente</button>
                             </form>
                         </div>
                     </div>
