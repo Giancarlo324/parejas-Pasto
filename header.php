@@ -16,6 +16,7 @@
          ?>
             <a class="nav-item nav-link active" href="/final_seminario/encuentra_pareja.php">Encontrar pareja</a>
             <a class="nav-item nav-link active" href="/final_seminario/quien_me_gusta.php">Mis gustos</a>
+            <a class="nav-item nav-link active" href="/final_seminario/a_quien_le_gusto.php">A quien le gusto</a>
             <a class="nav-item nav-link active" href="/final_seminario/perfil.php">Ver mi perfil</a>
             <a class="nav-item nav-link active" href="modificarPerfil.php?id=<?php echo $_SESSION['id']; ?>">Actualizar mis datos</a>
             <a class="nav-item nav-link active" href="logout.php">Cerrar sesión</a>
