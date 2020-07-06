@@ -80,9 +80,6 @@
             $contrasena = mysqli_real_escape_string($conexion, $_POST['contrasena']);
             $contrasena2 = mysqli_real_escape_string($conexion, $_POST['contrasena']);
 
-            // $Sexo = $_POST['Sexo'];
-            // $Interes = $_POST['Interes'];
-
             // Validación para campos vacíos y coincidencia de claves
             if (empty($Nombre)) {
                 array_push($errors, $errorNombre);
@@ -213,15 +210,51 @@
                               VALUES('$miId', '$valor')";
             mysqli_query($conexion, $query);
         }
-        // Siguiente
-        if (isset($_POST['boton3'])) {
-            $valor = $_POST['boton3'];
-
+        // Modificar mi perfil
+        if (isset($_POST['editar'])) {
             $miId = $_SESSION['id'];
+            $sql = "SELECT * FROM usuario WHERE id = $miId";
+            $query = mysqli_query($conexion, $sql);
+            while ($row = mysqli_fetch_array($query)) {
+                if ($_POST['password_1'] != '') {
+                    $password_1 = md5(mysqli_real_escape_string($conexion, $_POST['password_1']));
+                    $password_2 = md5(mysqli_real_escape_string($conexion, $_POST['password_2']));
+                }
+                if ($_POST['username'] != '')
+                    $username = mysqli_real_escape_string($conexion, $_POST['username']);
+                if ($_POST['username'] == '') $username = $row['username'];
+                if (empty($password_1)) {
+                    $password_1 = $row['contrasena'];
+                    $password_2 = $row['contrasena'];
+                }
+                $Interes = mysqli_real_escape_string($conexion, $_POST['Interes']);
+                // Verifico si las contraseñas coinciden
+                if ($password_1 != $password_2) {
+                    array_push($errors, $errorPassword2);
+                }
+                $sql2 = "UPDATE usuario SET username = ?, contrasena = ?, Interes = ? WHERE id = ?";
+                $sqlFuncional = $conexion->prepare($sql2);
+                $sqlFuncional->bind_param('ssii', $username, $password_1, $Interes, $miId);
+                $sqlFuncional->execute();
 
-            $query = "INSERT INTO megusta (id_usuario, quien_gusta) 
-                              VALUES('$miId', '$valor')";
-            mysqli_query($conexion, $query);
+                //$query2 = mysqli_query($conexion, $sql2);
+                if (count($errors) == 0) {
+                    if ($sqlFuncional) {
+                        $successError = "<div class='alert alert-success' role='alert'> Se actualizaron los datos </div>";
+                        //echo $successError;
+                        echo'<script type="text/javascript">
+                        alert("Datos actualizados!");
+                        window.location.href="modificarPerfil.php?id='.$miId.'";
+                        </script>';
+    ?>
+    
+    <?php
+                        //header("location: modificarPerfil.php?id=$miId");
+                    } else {
+                        echo "<div class='alert alert-danger' role='alert'>Algo salió mal, este nombre de usuario ya existe.</div>";
+                    }
+                } else echo "<div class='alert alert-danger' role='alert'> Las contraseñas no coinciden :( </div>";
+            }
         }
     }
     ?>

@@ -29,10 +29,8 @@ include "head.html";
                     $misGutos2 = "SELECT * FROM usuario INNER JOIN megusta ON usuario.id = megusta.quien_gusta WHERE id_usuario = ? and quien_gusta is not NULL";
                     // Consulta en donde podré saber el total de personas a mostrar por pagina y son las que indicaré.
                     $misGutos = "SELECT * FROM usuario INNER JOIN megusta ON usuario.id = megusta.quien_gusta WHERE id_usuario = ? and quien_gusta is not NULL LIMIT ?, ?";
-                    $resultadoGustos = mysqli_query($conexion, $misGutos);
                     $sqlGustos = $conexion->prepare($misGutos);
                     // Aquí hago la consulta sin límite para saber cuántas filas tengo en la consulta.
-                    $resultadoGustos2 = mysqli_query($conexion, $misGutos2);
                     $sqlGustos2 = $conexion->prepare($misGutos2);
                     $sqlGustos2->bind_param('i', $myId);
                     $sqlGustos2->execute();
