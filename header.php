@@ -1,28 +1,33 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-   <a class="navbar-brand" href="/final_seminario">Inicio</a>
-   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-   </button>
-   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-         <?php
-         if (!isset($_SESSION['username'])) :
-         ?>
-            <a class="nav-item nav-link active" href="/final_seminario/login.php">Iniciar Sesión</a>
-            <a class="nav-item nav-link active" href="/final_seminario/register.php">Registrarse</a>
-         <?php
-         endif;
-         if (isset($_SESSION['username'])) :
-         ?>
-            <a class="nav-item nav-link active" href="/final_seminario/encuentra_pareja.php">Encontrar pareja</a>
-            <a class="nav-item nav-link active" href="/final_seminario/quien_me_gusta.php">Mis gustos</a>
-            <a class="nav-item nav-link active" href="/final_seminario/a_quien_le_gusto.php">A quien le gusto</a>
-            <a class="nav-item nav-link active" href="/final_seminario/perfil.php">Ver mi perfil</a>
-            <a class="nav-item nav-link active" href="modificarPerfil.php?id=<?php echo $_SESSION['id']; ?>">Actualizar mis datos</a>
-            <a class="nav-item nav-link active" href="logout.php">Cerrar sesión</a>
-         <?php
-         endif;
-         ?>
-      </div>
+<!-- Header -->
+<section id="header">
+   <div class="container">
+
+      <!-- Logo -->
+      <h1 id="logo"><a href="/final_seminario">Encuentra Pareja Pasto</a></h1>
+      <p>Si estás solo, si estás de visita, ten un encuentro casual y disfruta del momento...</p>
+
+      <!-- Nav -->
+      <nav id="nav">
+         <ul>
+            <?php
+            if (!isset($_SESSION['username'])) :
+            ?>
+               <li><a class="icon solid fa-home" href="login.php"><span>Iniciar Sesión</span></a></li>
+               <li><a class="icon solid fa-home" href="register.php"><span>Registrarse</span></a></li>
+            <?php
+            endif;
+            if (isset($_SESSION['username'])) :
+            ?>
+               <li><a class="icon solid fa-cog" href="encuentra_pareja.php"><span>Encontrar pareja</span></a></li>
+               <li><a class="icon solid fa-retweet" href="quien_me_gusta.php"><span>Mis gustos</span></a></li>
+               <li><a class="icon solid fa-sitemap" href="a_quien_le_gusto.php"><span>A quien le gusto</span></a></li>
+               <li><a class="icon solid fa-sitemap" href="perfil.php"><span>Mi perfil</span></a></li>
+               <li><a class="icon solid fa-sitemap" href="modificarPerfil.php?id=<?php echo $_SESSION['id']; ?>"><span>Actualizar datos</span></a></li>
+               <li><a class="icon solid fa-sitemap" href="logout.php"><span>Cerrar sesión</span></a></li>
+            <?php
+            endif;
+            ?>
+         </ul>
+      </nav>
    </div>
-</nav>
+</section>

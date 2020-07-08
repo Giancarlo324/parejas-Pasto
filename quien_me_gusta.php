@@ -17,11 +17,11 @@ include "head.html";
     <div class="container">
         <div class="row">
             <div class="card-body">
-                <h1 class="p-3 mb-2 bg-success text-white">Bienvenido</h1>
+                <h2>Mis gustos</h2>
                 <?php
                 if ($conexion) {
                     if (!$_GET) header('Location:quien_me_gusta.php?pagina=1');
-                    if ($_GET['pagina']>3 || $_GET['pagina']<1) header('Location:quien_me_gusta.php?pagina=1');
+                    if ($_GET['pagina'] > 3 || $_GET['pagina'] < 1) header('Location:quien_me_gusta.php?pagina=1');
                     $iniciar = ($_GET['pagina'] - 1) * 3;
                     $myId = $_SESSION['id'];
                     $personas_pagina = 3;
@@ -43,10 +43,22 @@ include "head.html";
                     $totalFilas = $resulta->num_rows;
                     $paginas = $totalFilas2 / 3;
                     $paginas = ceil($paginas);
-                    if ($totalFilas == 0) { // Verifico si existen datos.
-                        echo "No le has dado me gusta a nadie";
-                    } else {
+                    if ($totalFilas == 0) { // Verifico si el usuario le ha dado me gusta a alguien.
                 ?>
+                        <section id="features">
+                            <div class="container">
+                                <header>
+                                    <h2>No pierdas la esperanza, encontrarás tu pareja perfecta</h2>
+                                </header>
+                                <div class="row aln-center">
+                                    <p class="textos"> Prueba a conocer personas distintas, crea conexiones y diviertete!</p>
+                                    <img src="images/buscarpareja.jpg" class="responsive" />
+                                </div>
+                            </div>
+                        </section>
+                    <?php
+                    } else {
+                    ?>
 
                         <?php
 
@@ -54,13 +66,30 @@ include "head.html";
                         ?>
                             <table class="table">
 
-                                <thead class="thead-light">
+                                <thead class="thead-light" style="text-align: center;">
                                     <tr>
-                                        <th>Nombre: <?php echo $fila['Nombre']; ?>
+                                        <th>Nombre: <?php echo $fila['Nombre']; ?> <?php echo $fila['Apellido']; ?>
                                         </th>
                                     </tr>
                                     <tr>
-                                        <td>Foto: <?php echo $fila['username']; ?>
+                                        <td>
+                                            <!-- Muestro las tres imágenes -->
+                                            <div id="imgPersona" class="carousel slide" style="width: 380px; margin:auto;" data-ride="carousel">
+                                                <div class="carousel-inner">
+                                                    <div class="carousel-item active">
+                                                        <img class="d-block w-100" src="<?php echo $fila['foto1'] ?>" style="width: 380px; height:410px;" alt="First slide">
+                                                    </div>
+                                                </div>
+                                                <a class="carousel-control-prev" href="#imgPersona" role="button" data-slide="prev">
+                                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                    <span class="sr-only">Anterior</span>
+                                                </a>
+                                                <a class="carousel-control-next" href="#imgPersona" role="button" data-slide="next">
+                                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                    <span class="sr-only">Siguiente</span>
+                                                </a>
+                                            </div>
+                                            <!-- Cierre muestra de las tres imágenes -->
                                         </td>
                                     </tr>
                                     <tr>
@@ -79,24 +108,24 @@ include "head.html";
                 }
                         ?>
                             </table>
-                            
-            </div>
-            
-        </div>
-        <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <li class="page-item <?php echo $_GET['pagina'] <= 1 ? 'disabled' : '' ?>"><a class="page-link" href="quien_me_gusta.php?pagina=<?php echo $_GET['pagina'] - 1 ?>">Anterior</a></li>
-            <?php for ($i = 0; $i < $paginas; $i++) : ?>
-                <li class="page-item <?php echo $_GET['pagina'] == $i + 1 ? 'active' : '' ?>"><a class="page-link" href="quien_me_gusta.php?pagina=<?php echo $i + 1 ?>"><?php echo $i + 1 ?></a></li>
-            <?php endfor ?>
 
-            <li class="page-item <?php echo $_GET['pagina'] >= $paginas ? 'disabled' : '' ?>"><a class="page-link" href="quien_me_gusta.php?pagina=<?php echo $_GET['pagina'] + 1 ?>">Siguiente</a></li>
-        </ul>
-    </nav>
-        
+            </div>
+
+        </div>
+        <div class="navigation">
+            <ul class="pagination">
+                <a class="<?php echo $_GET['pagina'] <= 1 ? 'disabled' : '' ?>" href="quien_me_gusta.php?pagina=<?php echo $_GET['pagina'] - 1 ?>">Anterior</a>
+                <?php for ($i = 0; $i < $paginas; $i++) : ?>
+                    <a class="<?php echo $_GET['pagina'] == $i + 1 ? 'active' : '' ?>" href="quien_me_gusta.php?pagina=<?php echo $i + 1 ?>"><?php echo $i + 1 ?></a>
+                <?php endfor ?>
+
+                <a class="<?php echo $_GET['pagina'] >= $paginas ? 'disabled' : '' ?>" href="quien_me_gusta.php?pagina=<?php echo $_GET['pagina'] + 1 ?>">Siguiente</a>
+        </div>
+    </div>
+
     </div>
     <?php
-    include "footer.html";
+    include "footer.php";
     ?>
 </body>
 

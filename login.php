@@ -1,11 +1,16 @@
 <?php
 include('sesion.php');
+if (isset($_SESSION['username']) and isset($_SESSION['id'])) : header('location: index.php');
+endif;
 ?>
 <!DOCTYPE html>
 <html>
-<?php
-include "head.html";
-?>
+
+<head>
+	<?php
+	include "head.html";
+	?>
+</head>
 
 <body>
 	<?php
@@ -13,24 +18,25 @@ include "head.html";
 	?>
 	<div class="container">
 		<div class="row">
-			<div class="card-body">
-				<h1 class="p-3 mb-2 bg-success text-white">Iniciar sesión</h1>
+			<div class="login">
+				<h2 style="text-align: center;">Iniciar sesión</h2>
 				<?php
 				if ($conexion) {
 				?>
-					<form method="post" action="login.php" class="p-3 mb-2 bg-light text-dark">
+					<form method="post" action="login.php">
 						<?php include('errors.php'); ?>
 						<div class="form-group">
 							<label>Correo electrónico</label>
-							<input type="email" class="form-control" name="email">
+							<input type="email" placeholder="Escribe tu correo electrónico" class="form-control" name="email">
 							<label>Contraseña</label>
-							<input type="password" class="form-control" name="contrasena">
+							<input type="password" placeholder="Escribe tu contraseña" class="form-control" name="contrasena">
 						</div>
 						<p>
+							<br>
 							<button type="submit" class="btn btn-primary" name="login_user">Iniciar sesión</button>
 						</p>
-						<p>
-							¿No estás registrado? <a href="register.php">¡Regístrate!</a>
+						<p style="font-size: 25px;">
+							¿No estás registrado? <br><a href="register.php">¡Regístrate!</a>
 						</p>
 					</form>
 				<?php
@@ -42,8 +48,8 @@ include "head.html";
 		</div>
 	</div>
 	<?php
-	include "footer.html";
-	?>
+    include "footer.php";
+    ?>
 </body>
 
 </html>
