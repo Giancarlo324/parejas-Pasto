@@ -66,48 +66,39 @@ include "head.html";
                         ?>
                             <table class="table">
 
-                                <thead class="thead-light" style="text-align: center;">
+                                <thead style="text-align: center;">
                                     <tr>
                                         <th>Nombre: <?php echo $fila['Nombre']; ?> <?php echo $fila['Apellido']; ?>
                                         </th>
                                     </tr>
                                     <tr>
-                                        <td>
+                                        <td class="responsive_pareja">
                                             <!-- Muestro las tres imágenes -->
-                                            <div id="imgPersona" class="carousel slide" style="width: 380px; margin:auto;" data-ride="carousel">
-                                                <div class="carousel-inner">
-                                                    <div class="carousel-item active">
-                                                        <img class="d-block w-100" src="<?php echo $fila['foto1'] ?>" style="width: 380px; height:410px;" alt="First slide">
-                                                    </div>
-                                                </div>
-                                                <a class="carousel-control-prev" href="#imgPersona" role="button" data-slide="prev">
-                                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                    <span class="sr-only">Anterior</span>
-                                                </a>
-                                                <a class="carousel-control-next" href="#imgPersona" role="button" data-slide="next">
-                                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                    <span class="sr-only">Siguiente</span>
-                                                </a>
+                                            <div id="imgPersona">
+                                                <img class="responsive_pareja" src="<?php echo $fila['foto1'] ?>">
                                             </div>
                                             <!-- Cierre muestra de las tres imágenes -->
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Ver perfil: <?php echo $fila['id']; ?>
+                                        <td>
+                                        <ul class="actions">
+                                        <li><a href="perfil.php?idGusta=<?php echo $fila['quien_gusta']; ?>" class="button icon solid fa-file">Ver su perfil</a></li>
+                                    </ul>
                                         </td>
                                     </tr>
-                                <?php
-                            }
-                                ?>
+                            </table>
                         <?php
+                        }
+                        ?>
+                <?php
                         //}
                         mysqli_close($conexion);
                     }
                 } else {
                     echo "<div class='container'>Ha ocurrido un error!</div>";
                 }
-                        ?>
-                            </table>
+                ?>
 
             </div>
 

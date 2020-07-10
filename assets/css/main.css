@@ -135,6 +135,31 @@ input, select, textarea {
 	  background: white;
   }
 
+  /* Para errores al registrarse o iniciar sesión */
+  .alert {
+	padding: 20px;
+	background-color: #f44336;
+	color: white;
+  }
+  /* Estilos para perfil */
+  .div1 {
+	  float: left;
+  }
+  .div2 {
+	  float: left;
+  }
+  .div3 {
+	  float: left;
+  }
+  .informacion {
+	  list-style:none
+  }
+
+  .prueba {
+	  width: 100%;
+	  text-align: center;
+  }
+
   /* style navigation */
   .navigation {
 	text-align: center;
@@ -203,6 +228,7 @@ input, select, textarea {
 		font-family: 'Source Sans Pro';
 		font-weight: 300;
 		color: #777;
+		font: caption;
 		line-height: 1.65em;
 		font-size: 15pt;
 	}
@@ -1837,7 +1863,7 @@ input, select, textarea {
 /* Table */
 
 	table {
-		width: 100%;
+		width: 108%;
 	}
 
 		table tbody tr {

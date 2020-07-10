@@ -29,10 +29,10 @@ include "head.html";
                             <label>Apellido</label>
                             <input type="text" placeholder="Escribe tu apellido" name="Apellido" value="<?php echo $Apellido; ?>">
                             <p>
-                                <label>Escoge tus tres mejores fotografías (tamaño recomendado: 410px alto * 380px ancho)</label>
-                                <input type="file" name="foto1" id="foto1" accept="image/*" require>
-                                <input type="file" name="foto2" id="foto2" accept="image/*" require>
-                                <input type="file" name="foto3" id="foto3" accept="image/*" require>
+                            <label>Escoge tus tres mejores fotografías (tamaño recomendado: 410px alto * 380px ancho y peso max:9mb)</label>
+                                <label style="text-align: left;">Foto 1: <input type="file" name="foto1" id="foto1" accept="image/*" require></label>
+                                <label style="text-align: left;">Foto 2: <input type="file" name="foto2" id="foto2" accept="image/*" require></label>
+                                <label style="text-align: left;">Foto 3: <input type="file" name="foto3" id="foto3" accept="image/*" require></label>
                             </p>
                             
                             <p>
@@ -69,7 +69,7 @@ include "head.html";
                                     <input type="radio" name="Interes" value="4" <?php if ($Interes == "4") echo "checked"; ?>>
                                     <span class="checkmark"></span>
                                 </label>
-                                <label class="miradio">Hombres y mujeres
+                                <label class="miradio">Hombres o mujeres
                                     <input type="radio" name="Interes" value="5" <?php if ($Interes == "5") echo "checked"; ?>>
                                     <span class="checkmark"></span>
                                 </label>
@@ -84,7 +84,7 @@ include "head.html";
                         </div>
                         <p>
                             <br>
-                            <button type="submit" class="btn" name="reg_user">Registrar</button>
+                            <button type="submit" name="reg_user">Registrar</button>
                         </p>
                         <p style="font-size: 25px;">
                             ¿Ya estás registrado? <br><a href="login.php"><strong>Iniciar sesión</strong></a>

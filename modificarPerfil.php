@@ -18,7 +18,9 @@ include "head.html";
     <div class="container">
         <div class="row">
             <div class="card-body">
-                <h1 class="p-3 mb-2 bg-success text-white">Bien</h1>
+                <header>
+                    <h2>Actualizar mi perfil</h2>
+                </header>
                 <?php
                 if ($conexion) {
                     $miId = $_SESSION['id'];
@@ -28,16 +30,18 @@ include "head.html";
                         $query = mysqli_query($conexion, $sql);
                         while ($row = mysqli_fetch_array($query)) {
                             $img1 = $row['foto1'];
-                            echo $img1;
                             $img2 = $row['foto2'];
                             $img3 = $row['foto3'];
                 ?>
-                            <form method="post" enctype="multipart/form-data" action="modificarPerfil.php?id=<?php echo $miId ?>" class="p-3 mb-2 bg-light text-dark">
-                                <div class="form-group">
-                                    <label>Nombre de usuario</label>
-                                    <input type="text" class="form-control" name="username" value="<?php echo $row['username']; ?>">
+                            <form method="post" enctype="multipart/form-data" action="modificarPerfil.php?id=<?php echo $miId ?>">
+                                <?php include('errors.php'); ?>
+                                <div>
+                                    <label>Nombre</label>
+                                    <input type="text" placeholder="Escribe tu nombre" name="Nombre" value="<?php echo $row['Nombre']; ?>">
+                                    <label>Apellido</label>
+                                    <input type="text" placeholder="Escribe tu apellido" name="Apellido" value="<?php echo $row['Apellido'];; ?>">
                                     <p>
-                                        <label>Escoge tus tres mejores fotografías (tamaño recomendado: 410px alto * 380px ancho)</label>
+                                        <label>Escoge tus tres mejores fotografías (tamaño recomendado: 410px alto * 380px ancho y peso max:9mb)</label>
                                         <input type="file" class="form-control" name="foto1" id="foto1" accept="image/*" />
                                         <?php echo "<img src='$img1' style='width:150px; height:160px;'" ?>
                                     </p>
@@ -49,9 +53,35 @@ include "head.html";
                                         <input type="file" class="form-control" name="foto3" id="foto3" accept="image/*" />
                                         <?php echo "<img src='$img3' style='width:150px; height:160px;'" ?>
                                     </p>
+
+                                    <p>
+                                        <label>Sexo</label>
+
+                                        <label class="miradio">Hombre
+                                            <input type="radio" name="Sexo" value="1" <?php if ($Sexo == "1") echo "checked";
+                                                                                        echo $row['Sexo'] == 1 ? 'checked' : '' ?>>
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <label class="miradio">Mujer
+                                            <input type="radio" name="Sexo" value="2" <?php if ($Sexo == "2") echo "checked";
+                                                                                        echo $row['Sexo'] == 2 ? 'checked' : '' ?>>
+                                            <span class="checkmark"></span>
+                                        </label>
+
+                                    </p>
+                                    <label>Nivel de estudios acadmémicos</label>
+                                    <input type="text" placeholder="Escribe que estudias actualmente" name="Escuela" value="<?php echo $row['Escuela']; ?>">
+                                    <!--
+                                    <label>Nombre de usuario</label>
+                                    <input type="text" placeholder="Escribe tu nombre de usuario" name="username" value="<?php echo $row['username']; ?>">
+                                    -->
+                                    <label>Sobre ti</label>
+                                    <textarea type="text" placeholder="Describe cuales son tus gustos, que buscas, qué haces..." name="Sobre_ti" value="<?php echo $row['Sobre_ti']; ?>"></textarea>
+                                    <label>Celular</label>
+                                    <input type="number" placeholder="Num. Celular" name="Celular" value="<?php echo $row['Celular']; ?>">
                                     <p>
                                         <label>Me interesa</label>
-                                        
+
                                         <label class="miradio">Hombres
                                             <input type="radio" name="Interes" value="3" <?php if ($Interes == "3") echo "checked";
                                                                                             echo $row['Interes'] == 3 ? 'checked' : '' ?>>
@@ -69,21 +99,21 @@ include "head.html";
                                         </label>
                                     </p>
                                     <label>Contraseña nueva</label>
-                                    <input type="password" class="form-control" name="password_1">
+                                    <input type="password" placeholder="Escribe tu nueva contraseña" name="password_1">
                                     <label>Confirmar contraseña nueva</label>
-                                    <input type="password" class="form-control" name="password_2">
+                                    <input type="password" placeholder="Confirma tu nueva contraseña" name="password_2">
                                 </div>
                                 <br>
                                 <p>
-                                    <input type="submit" name="editar" class="btn btn-success" value="Actualizar" />
+                                    <input type="submit" name="editar" value="Actualizar" />
                                 </p>
                             </form>
                 <?php
                         }
-                    } else echo "<div class='alert alert-danger'>No tienes permiso para ver esta pagina!</div>";
+                    } else echo "<div class=''>No tienes permiso para ver esta pagina!</div>";
                     mysqli_close($conexion);
                 } else {
-                    echo "<div class='alert alert-danger'>Ha ocurrido un error!</div>";
+                    echo "<div class=''>Ha ocurrido un error!</div>";
                 }
                 ?>
             </div>

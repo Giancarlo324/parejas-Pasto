@@ -19,29 +19,30 @@
     $_SESSION['success'] = ""; // Almaceno cuando se haga bien el procedimiento.
 
     // Textos para errores en los campos.
-    $errorNombre = "<div class='alert alert-danger' role='alert'> Nombre es obligatorio! </div>";
-    $errorApellido = "<div class='alert alert-danger' role='alert'> Apellido es obligatorio! </div>";
-    $errorSexo = "<div class='alert alert-danger' role='alert'> Selecciona tu sexo </div>";
-    $errorNacimiento = "<div class='alert alert-danger' role='alert'> Selecciona tu fecha de nacimiento </div>";
-    $errorEstudio = "<div class='alert alert-danger' role='alert'> Ingresa tu nivel de estudio acadmémico </div>";
-    $errorUsername = "<div class='alert alert-danger' role='alert'> Ingresa un nombre de usuario </div>";
-    $errorSobre_ti = "<div class='alert alert-danger' role='alert'> Ingresa algo sobre ti </div>";
-    $errorCelular = "<div class='alert alert-danger' role='alert'> Ingresa tu número de celular </div>";
-    $errorInteres = "<div class='alert alert-danger' role='alert'> Selecciona qué te interesa encontrar </div>";
-    $errorEmail = "<div class='alert alert-danger' role='alert'> Email es obligatorio! </div>";
-    $errorPassword = "<div class='alert alert-danger' role='alert'> Contraseña es obligatoria! </div>";
-    $errorPassword2 = "<div class='alert alert-danger' role='alert'> Las contraseñas no coinciden :( </div>";
-    $errorImagenoPeso = "<div class='alert alert-danger' role='alert'> Archivo no permitido o excede el límite de peso permitido(9mb) </div>";
+    $errorNombre = "<div class='alert' role='alert'> Nombre es obligatorio! </div>";
+    $errorApellido = "<div class='alert' role='alert'> Apellido es obligatorio! </div>";
+    $errorSexo = "<div class='alert' role='alert'> Selecciona tu sexo </div>";
+    $errorNacimiento = "<div class='alert' role='alert'> Selecciona tu fecha de nacimiento </div>";
+    $errorEdad = "<div class='alert' role='alert'> Solo se permiten mayores de 18 años </div>";
+    $errorEstudio = "<div class='alert' role='alert'> Ingresa tu nivel de estudio acadmémico </div>";
+    $errorUsername = "<div class='alert' role='alert'> Ingresa un nombre de usuario </div>";
+    $errorSobre_ti = "<div class='alert' role='alert'> Ingresa algo sobre ti </div>";
+    $errorCelular = "<div class='alert' role='alert'> Ingresa tu número de celular </div>";
+    $errorInteres = "<div class='alert' role='alert'> Selecciona qué te interesa encontrar </div>";
+    $errorEmail = "<div class='alert' role='alert'> Email es obligatorio! </div>";
+    $errorPassword = "<div class='alert' role='alert'> Contraseña es obligatoria! </div>";
+    $errorPassword2 = "<div class='alert' role='alert'> Las contraseñas no coinciden :( </div>";
+    $errorImagenoPeso = "<div class='alert' role='alert'> Archivo no permitido o excede el límite de peso permitido(9mb) </div>";
 
     // Verificaciones.
-    $errorPassword = "<div class='alert alert-danger' role='alert'> Contraseña es obligatoria! </div>";
-    $errorPassword2 = "<div class='alert alert-danger' role='alert'> Las contraseñas no coinciden :( </div>";
-    $errorUsuarioExiste = "<div class='alert alert-danger' role='alert'> El usuario ingresado ya existe</div>";
-    $errorEmailExiste = "<div class='alert alert-danger' role='alert'> El correo ingresado ya existe</div>";
+    $errorPassword = "<div class='alert' role='alert'> Contraseña es obligatoria! </div>";
+    $errorPassword2 = "<div class='alert' role='alert'> Las contraseñas no coinciden :( </div>";
+    $errorUsuarioExiste = "<div class='alert' role='alert'> El usuario ingresado ya existe</div>";
+    $errorEmailExiste = "<div class='alert' role='alert'> El correo ingresado ya existe</div>";
 
     // Cuando salga bien todo o datos incorrectos.
-    $successError = "<div class='alert alert-success' role='alert'> Todo salió perfecto! </div>";
-    $errorDatos = "<div class='alert alert-danger' role='alert'> Tus datos son incorrectos :( </div>";
+    $successError = "<div class='alert' role='alert'> Todo salió perfecto! </div>";
+    $errorDatos = "<div class='alert' role='alert'> Tus datos son incorrectos :( </div>";
 
 
     if ($conexion) { // Verifico conexión de DB.
@@ -93,15 +94,6 @@
 
             $permitidos = array("image/jpg", "image/jpeg", "image/png", "image/jpeg", "image/bmp");
             $limite_peso_b = 9437184; //9mb
-            /*
-            echo $_FILES['foto1']['size']."<br>";
-            echo $_FILES['foto2']['size']."<br>";
-            echo $_FILES['foto3']['size']."<br>";
-
-            echo $_FILES['foto1']['type']."<br>";
-            echo $_FILES['foto2']['type']."<br>";
-            echo $_FILES['foto3']['type']."<br>";
-            */
 
             // Valido que sea una imagen y el tamaño no supere las 9mb.
             if ((in_array($_FILES['foto1']['type'], $permitidos)) && (in_array($_FILES['foto2']['type'], $permitidos)) && (in_array($_FILES['foto3']['type'], $permitidos)) && $_FILES['foto1']['size'] <= $limite_peso_b && $_FILES['foto2']['size'] <= $limite_peso_b && $_FILES['foto3']['size'] <= $limite_peso_b) {
@@ -117,45 +109,40 @@
             $contrasena2 = mysqli_real_escape_string($conexion, $_POST['contrasena']);
 
             // Validación para campos vacíos y coincidencia de claves
-            if (empty($Nombre)) {
-                array_push($errors, $errorNombre);
+            if (empty($Nombre)) array_push($errors, $errorNombre);
+            
+            if (empty($Apellido)) array_push($errors, $errorApellido);
+            
+            if (empty($Sexo)) array_push($errors, $errorSexo);
+            
+            if (empty($Nacimiento)) array_push($errors, $errorNacimiento);
+            
+            if (!empty($Nacimiento)) {
+                //
+                $fecha = new DateTime($Nacimiento);
+                $hoy = new DateTime();
+                $annos = $hoy->diff($fecha);
+                if($annos->y < 18) array_push($errors, $errorEdad);
             }
-            if (empty($Apellido)) {
-                array_push($errors, $errorApellido);
-            }
-            if (empty($Sexo)) {
-                array_push($errors, $errorSexo);
-            }
-            if (empty($Nacimiento)) {
-                array_push($errors, $errorNacimiento);
-            }
-            if (empty($Escuela)) {
-                array_push($errors, $errorEstudio);
-            }
-            if (empty($username)) {
-                array_push($errors, $errorUsername);
-            }
-            if (empty($Sobre_ti)) {
-                array_push($errors, $errorSobre_ti);
-            }
-            if (empty($Celular)) {
-                array_push($errors, $errorCelular);
-            }
-            if (empty($email)) {
-                array_push($errors, $errorEmail);
-            }
-            if (empty($contrasena)) {
-                array_push($errors, $errorPassword);
-            }
-            if ($contrasena != $contrasena2) {
-                array_push($errors, $errorPassword2);
-            }
-            if (validarUsername($username, $conexion) == 1) {
-                array_push($errors, $errorUsuarioExiste);
-            }
-            if (validarEmail($email, $conexion) == 1) {
-                array_push($errors, $errorEmailExiste);
-            }
+            
+            if (empty($Escuela)) array_push($errors, $errorEstudio);
+            
+            if (empty($username)) array_push($errors, $errorUsername);
+            
+            if (empty($Sobre_ti)) array_push($errors, $errorSobre_ti);
+            
+            if (empty($Celular)) array_push($errors, $errorCelular);
+            
+            if (empty($email)) array_push($errors, $errorEmail);
+            
+            if (empty($contrasena)) array_push($errors, $errorPassword);
+            
+            if ($contrasena != $contrasena2) array_push($errors, $errorPassword2);
+            
+            if (validarUsername($username, $conexion) == 1) array_push($errors, $errorUsuarioExiste);
+            
+            if (validarEmail($email, $conexion) == 1) array_push($errors, $errorEmailExiste);
+            
             // Registra un usuario si todo sale bien.
             if (count($errors) == 0) {
                 // Las fotografías tiene el formato de: img/nombredeusuario#.extension
@@ -187,7 +174,6 @@
                 } else echo "pailas";
             }
         }
-
 
         // Inicio de sesión
         if (isset($_POST['login_user'])) {
@@ -260,104 +246,119 @@
             $miId = $_SESSION['id'];
             $sql = "SELECT * FROM usuario WHERE id = $miId";
             $query = mysqli_query($conexion, $sql);
-            $Interes = mysqli_real_escape_string($conexion, $_POST['Interes']);
 
             $permitidos = array("image/jpg", "image/jpeg", "image/png", "image/jpeg", "image/bmp");
             $limite_peso_b = 9437184; //9mb
 
             while ($row = mysqli_fetch_array($query)) {
+                // Recibir los input del formulario, con seguridad de PHP.
 
-                if ($_POST['password_1'] != '') {
-                    $password_1 = md5(mysqli_real_escape_string($conexion, $_POST['password_1']));
-                    $password_2 = md5(mysqli_real_escape_string($conexion, $_POST['password_2']));
-                }
-                if ($_POST['username'] != '')
-                    $username = mysqli_real_escape_string($conexion, $_POST['username']);
-                if (validarUsernameModificar($username, $miId, $conexion) == 1) {
-                    array_push($errors, $errorUsuarioExiste);
-                }
-                if ($_POST['username'] == '') $username = $row['username'];
-                if (empty($password_1)) {
-                    $password_1 = $row['contrasena'];
-                    $password_2 = $row['contrasena'];
-                }
+                $Nombre = mysqli_real_escape_string($conexion, $_POST['Nombre']);
+                $Apellido = mysqli_real_escape_string($conexion, $_POST['Apellido']);
+                // Siguen las fotografías que están más abajo.
+                $Sexo = mysqli_real_escape_string($conexion, $_POST['Sexo']);
+                $Escuela = mysqli_real_escape_string($conexion, $_POST['Escuela']);
+                //$username = mysqli_real_escape_string($conexion, $_POST['username']);
+                $Sobre_ti = mysqli_real_escape_string($conexion, $_POST['Sobre_ti']);
+                $Celular = mysqli_real_escape_string($conexion, $_POST['Celular']);
+
                 $Interes = mysqli_real_escape_string($conexion, $_POST['Interes']);
-                // Verifico si las contraseñas coinciden
-                if ($password_1 != $password_2) {
-                    array_push($errors, $errorPassword2);
-                }
+                $contrasena = mysqli_real_escape_string($conexion, $_POST['password_1']);
+                $contrasena2 = mysqli_real_escape_string($conexion, $_POST['password_2']);
 
-                // Valido si la actualización de fotos la hace o no.
-                if ($_FILES['foto1']['name'] == '') $foto1 = $row['foto1'];
-                if ($_FILES['foto2']['name'] == '') $foto2 = $row['foto2'];
-                if ($_FILES['foto3']['name'] == '') $foto3 = $row['foto3'];
 
-                if ($_FILES['foto1']['name'] != '') {
+                if (empty($Nombre)) $Nombre = mysqli_real_escape_string($conexion, $row['Nombre']);
+                if (empty($Apellido)) $Apellido = mysqli_real_escape_string($conexion, $row['Apellido']);
+                if (empty($_FILES['foto1']['name'])) $foto1 = $row['foto1'];
+                if (empty($_FILES['foto2']['name'])) $foto2 = $row['foto2'];
+                if (empty($_FILES['foto3']['name'])) $foto3 = $row['foto3'];
+
+                if (!empty($_FILES['foto1']['name'])) {
                     // Valido que sea una imagen y el tamaño no supere las 9mb.
                     if ((in_array($_FILES['foto1']['type'], $permitidos)) && $_FILES['foto1']['size'] <= $limite_peso_b) {
                         // Elimino la foto actual.
                         unlink($row['foto1']);
                         // Nueva ruta para nueva foto.
-                        $foto1 = "img/" . $username . "1." . pathinfo($_FILES['foto1']['name'], PATHINFO_EXTENSION);
+                        $foto1 = "img/" . $row['username'] . "1." . pathinfo($_FILES['foto1']['name'], PATHINFO_EXTENSION);
                         // Subo foto.
                         move_uploaded_file($_FILES['foto1']['tmp_name'], $foto1);
                     } else array_push($errors, $errorImagenoPeso);
                 }
 
-                if ($_FILES['foto2']['name'] != '') {
+                if (!empty($_FILES['foto2']['name'])) {
                     // Valido que sea una imagen y el tamaño no supere las 9mb.
                     if ((in_array($_FILES['foto2']['type'], $permitidos)) && $_FILES['foto2']['size'] <= $limite_peso_b) {
                         // Elimino la foto actual.
                         unlink($row['foto2']);
                         // Nueva ruta para nueva foto.
-                        $foto2 = "img/" . $username . "2." . pathinfo($_FILES['foto2']['name'], PATHINFO_EXTENSION);
+                        $foto2 = "img/" . $row['username'] . "2." . pathinfo($_FILES['foto2']['name'], PATHINFO_EXTENSION);
                         // Subo foto.
                         move_uploaded_file($_FILES['foto2']['tmp_name'], $foto2);
                     } else array_push($errors, $errorImagenoPeso);
                 }
 
-                if ($_FILES['foto3']['name'] != '') {
+                if (!empty($_FILES['foto3']['name'])) {
                     // Valido que sea una imagen y el tamaño no supere las 9mb.
                     if ((in_array($_FILES['foto3']['type'], $permitidos)) && $_FILES['foto3']['size'] <= $limite_peso_b) {
                         // Elimino la foto actual.
                         unlink($row['foto3']);
                         // Nueva ruta para nueva foto.
-                        $foto3 = "img/" . $username . "3." . pathinfo($_FILES['foto3']['name'], PATHINFO_EXTENSION);
+                        $foto3 = "img/" . $row['username'] . "3." . pathinfo($_FILES['foto3']['name'], PATHINFO_EXTENSION);
                         // Subo foto.
                         move_uploaded_file($_FILES['foto3']['tmp_name'], $foto3);
                     } else array_push($errors, $errorImagenoPeso);
                 }
+                if (empty($Sexo)) $Sexo = mysqli_real_escape_string($conexion, $row['Sexo']);
+                if (empty($Escuela)) $Escuela = mysqli_real_escape_string($conexion, $row['Escuela']);
+                //if (empty($username)) $username = mysqli_real_escape_string($conexion, $row['username']);
+                if (empty($Sobre_ti)) $Sobre_ti = mysqli_real_escape_string($conexion, $row['Sobre_ti']);
+                if (empty($Celular)) $Celular = mysqli_real_escape_string($conexion, $row['Celular']);
+                if (empty($Celular)) $Celular = mysqli_real_escape_string($conexion, $row['Celular']);
+                if (empty($Interes)) $Interes = mysqli_real_escape_string($conexion, $row['Interes']);
+                if (empty($contrasena) && empty($contrasena2)) {
+                    $password_1 = $row['contrasena'];
+                    $password_2 = $row['contrasena'];
+                }
+                // Hasta aquí están las validaciones sobre si hace o no modificaciones.
 
-                //if ((in_array($_FILES['foto1']['type'], $permitidos)))
-
-                    // Valido que sea una imagen y el tamaño no supere las 9mb.
-                    /*if ((in_array($_FILES['foto1']['type'], $permitidos)) && (in_array($_FILES['foto2']['type'], $permitidos)) && (in_array($_FILES['foto3']['type'], $permitidos)) && $_FILES['foto1']['size'] <= $limite_peso_b && $_FILES['foto2']['size'] <= $limite_peso_b && $_FILES['foto3']['size'] <= $limite_peso_b) {
-                } else {
-                    array_push($errors, $errorImagenoPeso);
+                /* Validación para saber si el usuario nuevo coincide o no con uno existente.
+                if (validarUsernameModificar($username, $miId, $conexion) == 1) {
+                    array_push($errors, $errorUsuarioExiste);
                 }*/
+                // Validación para saber si cambia la contraseña
+                if (!empty($contrasena)) {
+                    if ($contrasena != $contrasena2) {
+                        array_push($errors, $errorPassword2);
+                    } else {
+                        $contrasena = md5(mysqli_real_escape_string($conexion, $contrasena));
+                        $contrasena2 = md5(mysqli_real_escape_string($conexion, $contrasena2));
+                    }
+                }
 
-                    //$query2 = mysqli_query($conexion, $sql2);
-                    if (count($errors) == 0) {
-                        $sql2 = "UPDATE usuario SET username = ?, foto1 = ?, foto2 = ?, foto3 = ?, contrasena = ?, Interes = ? WHERE id = ?";
-                        $sqlFuncional = $conexion->prepare($sql2);
-                        $sqlFuncional->bind_param('sssssii', $username, $foto1, $foto2, $foto3, $password_1, $Interes, $miId);
-                        $sqlFuncional->execute();
-                        if ($sqlFuncional)
-                            //$successError = "<div class='alert alert-success' role='alert'> Se actualizaron los datos </div>";
-                            //echo $successError;
-                            echo '<script type="text/javascript">
-                            alert("Datos actualizados!");
-                            window.location.href="modificarPerfil.php?id=' . $miId . '";
-                            </script>';
-                        else
-                            echo "<div class='alert alert-danger' role='alert'>Algo salió mal.</div>";
-                    } else echo '<script type="text/javascript">
-                    alert("Error en la actualización de datos!");
-                    window.location.href="modificarPerfil.php?id=' . $miId . '";
-                    </script>';
+                // Actualiza un usuario si todo sale bien.
+                if (count($errors) == 0) {
+
+                    $password = md5($contrasena); // Cifrar la contraseña antes de guardarla en la base de datos
+                    $sql2 = "UPDATE usuario SET Nombre = ?, Apellido = ?, foto1 = ?, foto2 = ?, foto3 = ?, Sexo = ?, Escuela = ?, Sobre_ti = ?, Celular = ?, Interes = ?, contrasena = ? WHERE id = ?";
+                    $sqlFuncional = $conexion->prepare($sql2);
+                    $sqlFuncional->bind_param('sssssissiisi', $Nombre, $Apellido, $foto1, $foto2, $foto3, $Sexo, $Escuela, $Sobre_ti, $Celular, $Interes, $password_1, $miId);
+                    $sqlFuncional->execute();
+
+                    if ($sqlFuncional)
+                        echo '<script type="text/javascript">
+                        alert("Datos actualizados!");
+                        window.location.href="modificarPerfil.php?id=' . $miId . '";
+                        </script>';
+                    else
+                        echo "<div class='alert' role='alert'>Algo salió mal.</div>";
+                } else echo '<script type="text/javascript">
+                        alert("Las contraseñas no coinciden!");
+                        window.location.href="modificarPerfil.php?id=' . $miId . '";
+                        </script>';
             }
         }
     }
+
     ?>
 
 </div>

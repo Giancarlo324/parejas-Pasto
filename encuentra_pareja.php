@@ -88,9 +88,9 @@ include "head.html";
                                     <section>
                                         <img class="responsive_pareja" src="<?php echo $fila['foto1'] ?>" alt="" />
                                         <header>
-                                            <h3>Información...</h3>
+                                        <h3>Estudios</h3>
                                         </header>
-                                        <p><?php echo $fila['Sobre_ti']; ?>.</p>
+                                        <p><?php echo $fila['Escuela']; ?>.</p>
                                     </section>
 
                                 </div>
@@ -100,9 +100,9 @@ include "head.html";
                                     <section>
                                         <img class="responsive_pareja" src="<?php echo $fila['foto2'] ?>" alt="" />
                                         <header>
-                                            <h3>Estudios</h3>
+                                            <h3>Información...</h3>
                                         </header>
-                                        <p><?php echo $fila['Escuela']; ?>.</p>
+                                        <p><?php echo $fila['Sobre_ti']; ?>.</p>
                                     </section>
 
                                 </div>
@@ -134,9 +134,6 @@ include "head.html";
                                         <br>
                                     </form>
                                 </div>
-                                    <ul class="actions">
-                                        <li><a href="#" class="button icon solid fa-file">Ver su perfil</a></li>
-                                    </ul>
                                 </div>
                             </div>
                         </div>
