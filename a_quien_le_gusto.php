@@ -26,9 +26,9 @@ include "head.html";
                     $myId = $_SESSION['id'];
                     $personas_pagina = 3;
                     // Consulta en donde podré saber el total de personas.
-                    $misGutos2 = "SELECT * FROM usuario INNER JOIN megusta ON usuario.id = megusta.id_usuario WHERE quien_gusta = ? and quien_gusta is not NULL";
+                    $misGutos2 = "SELECT Nombre, Apellido, foto1, quien_gusta FROM usuario INNER JOIN megusta ON usuario.id = megusta.id_usuario WHERE quien_gusta = ? and quien_gusta is not NULL";
                     // Consulta en donde podré saber el total de personas a mostrar por pagina y son las que indicaré.
-                    $misGutos = "SELECT * FROM usuario INNER JOIN megusta ON usuario.id = megusta.id_usuario WHERE quien_gusta = ? and quien_gusta is not NULL LIMIT ?, ?";
+                    $misGutos = "SELECT Nombre, Apellido, foto1, quien_gusta FROM usuario INNER JOIN megusta ON usuario.id = megusta.id_usuario WHERE quien_gusta = ? and quien_gusta is not NULL LIMIT ?, ?";
                     $sqlGustos = $conexion->prepare($misGutos);
                     // Aquí hago la consulta sin límite para saber cuántas filas tengo en la consulta.
                     $sqlGustos2 = $conexion->prepare($misGutos2);

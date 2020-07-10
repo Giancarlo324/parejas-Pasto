@@ -57,7 +57,7 @@ include "head.html";
                             <label>Sobre ti</label>
                             <textarea type="text" placeholder="Describe cuales son tus gustos, que buscas, qué haces..." name="Sobre_ti" value="<?php echo $Sobre_ti; ?>" placeholder="Escribe algo interesante sobre ti..."></textarea>
                             <label>Celular</label>
-                            <input type="number" placeholder="Num. Celular" name="Celular" value="<?php echo $Celular; ?>">
+                            <input type="tel" maxlength="10" placeholder="Num. Celular" name="Celular" value="<?php echo $Celular; ?>">
                             <p>
                                 <label>Me interesa</label>
 

@@ -26,8 +26,14 @@ include "head.html";
                     $miId = $_SESSION['id'];
                     if (isset($_GET['id']) && $_SESSION['id'] == $_GET['id']) {
 
-                        $sql = "SELECT * FROM usuario WHERE id = $miId";
-                        $query = mysqli_query($conexion, $sql);
+                        $sql = "SELECT foto1, foto2, foto3, Nombre, Apellido, Sexo, Escuela, Sobre_ti, Celular, Interes, contrasena FROM usuario WHERE id = ?";
+                        //
+                        $sqlFun = $conexion->prepare($sql);
+                        $sqlFun->bind_param('i', $miId);
+                        $sqlFun->execute();
+                        $query = $sqlFun->get_result();
+                        //
+                        //$query = mysqli_query($conexion, $sql);
                         while ($row = mysqli_fetch_array($query)) {
                             $img1 = $row['foto1'];
                             $img2 = $row['foto2'];
@@ -42,15 +48,15 @@ include "head.html";
                                     <input type="text" placeholder="Escribe tu apellido" name="Apellido" value="<?php echo $row['Apellido'];; ?>">
                                     <p>
                                         <label>Escoge tus tres mejores fotografías (tamaño recomendado: 410px alto * 380px ancho y peso max:9mb)</label>
-                                        <input type="file" class="form-control" name="foto1" id="foto1" accept="image/*" />
+                                        <input type="file"  name="foto1" id="foto1" accept="image/*" />
                                         <?php echo "<img src='$img1' style='width:150px; height:160px;'" ?>
                                     </p>
                                     <p>
-                                        <input type="file" class="form-control" name="foto2" id="foto2" accept="image/*" />
+                                        <input type="file"  name="foto2" id="foto2" accept="image/*" />
                                         <?php echo "<img src='$img2' style='width:150px; height:160px;'" ?>
                                     </p>
                                     <p>
-                                        <input type="file" class="form-control" name="foto3" id="foto3" accept="image/*" />
+                                        <input type="file"  name="foto3" id="foto3" accept="image/*" />
                                         <?php echo "<img src='$img3' style='width:150px; height:160px;'" ?>
                                     </p>
 
@@ -78,7 +84,7 @@ include "head.html";
                                     <label>Sobre ti</label>
                                     <textarea type="text" placeholder="Describe cuales son tus gustos, que buscas, qué haces..." name="Sobre_ti" value="<?php echo $row['Sobre_ti']; ?>"></textarea>
                                     <label>Celular</label>
-                                    <input type="number" placeholder="Num. Celular" name="Celular" value="<?php echo $row['Celular']; ?>">
+                                    <input type="tel" maxlength="10" placeholder="Num. Celular" name="Celular" value="<?php echo $row['Celular']; ?>">
                                     <p>
                                         <label>Me interesa</label>
 

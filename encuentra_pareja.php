@@ -30,7 +30,7 @@ include "head.html";
             //$resultadoInteres = mysqli_query($conexion, $interesUsuario);
             while ($fila = mysqli_fetch_assoc($resulta)) {
                 if ($fila['Interes'] == 3) { // Si le interesan hombres.
-                    $consultaHombres = "SELECT * FROM usuario WHERE id != ? and Sexo = 1 and (Interes = 4 or Interes = 5) ";
+                    $consultaHombres = "SELECT Nombre, Apellido, foto1, foto2, foto3, Escuela, Sobre_ti, Nacimiento, id FROM usuario WHERE id != ? and Sexo = 1 and (Interes = 4 or Interes = 5) ";
 
                     $sqlFuncional2 = $conexion->prepare($consultaHombres);
                     $sqlFuncional2->bind_param('i', $myId);
@@ -40,7 +40,7 @@ include "head.html";
                     //$resultado = mysqli_query($conexion, $consultaHombres);
                 }
                 if ($fila['Interes'] == 4) { // Si le interesan mujeres.
-                    $consultaMujeres = "SELECT * FROM usuario WHERE id != ? and Sexo = 2 and (Interes = 3 or Interes = 5)";
+                    $consultaMujeres = "SELECT Nombre, Apellido, foto1, foto2, foto3, Escuela, Sobre_ti, Nacimiento, id FROM usuario WHERE id != ? and Sexo = 2 and (Interes = 3 or Interes = 5)";
 
                     $sqlFuncional3 = $conexion->prepare($consultaMujeres);
                     $sqlFuncional3->bind_param('i', $myId);
@@ -49,7 +49,7 @@ include "head.html";
 
                     //$resultado = mysqli_query($conexion, $consultaMujeres);
                 } else { // Si le interesa todo.
-                    $consultaHombres = "SELECT * FROM usuario WHERE id != ?";
+                    $consultaHombres = "SELECT Nombre, Apellido, foto1, foto2, foto3, Escuela, Sobre_ti, Nacimiento, id FROM usuario WHERE id != ?";
 
                     $sqlFuncional4 = $conexion->prepare($consultaHombres);
                     $sqlFuncional4->bind_param('i', $myId);

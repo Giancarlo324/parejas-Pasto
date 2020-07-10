@@ -1,6 +1,6 @@
 <?php
 include('sesion.php');
-if (isset($_SESSION['username']) and isset($_SESSION['id'])) : header('location: index.php');
+if (isset($_SESSION['username']) and isset($_SESSION['id'])) : header('location:index.php');
 endif;
 ?>
 <!DOCTYPE html>
@@ -27,9 +27,9 @@ endif;
 						<?php include('errors.php'); ?>
 						<div class="form-group">
 							<label>Correo electrónico</label>
-							<input type="email" placeholder="Escribe tu correo electrónico" class="form-control" name="email">
+							<input type="email" placeholder="Escribe tu correo electrónico"  name="email">
 							<label>Contraseña</label>
-							<input type="password" placeholder="Escribe tu contraseña" class="form-control" name="contrasena">
+							<input type="password" placeholder="Escribe tu contraseña"  name="contrasena">
 						</div>
 						<p>
 							<br>

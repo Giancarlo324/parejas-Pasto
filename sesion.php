@@ -28,6 +28,7 @@
     $errorUsername = "<div class='alert' role='alert'> Ingresa un nombre de usuario </div>";
     $errorSobre_ti = "<div class='alert' role='alert'> Ingresa algo sobre ti </div>";
     $errorCelular = "<div class='alert' role='alert'> Ingresa tu número de celular </div>";
+    $errorCelularInvalido = "<div class='alert' role='alert'> Ingresa un número de celular válido </div>";
     $errorInteres = "<div class='alert' role='alert'> Selecciona qué te interesa encontrar </div>";
     $errorEmail = "<div class='alert' role='alert'> Email es obligatorio! </div>";
     $errorPassword = "<div class='alert' role='alert'> Contraseña es obligatoria! </div>";
@@ -50,7 +51,7 @@
         // Validar username que no se repita.
         function validarUsername($username, $conexion)
         {
-            $sql = "SELECT * FROM usuario
+            $sql = "SELECT username FROM usuario
             WHERE username='$username'";
 
             $result = mysqli_query($conexion, $sql);
@@ -60,18 +61,8 @@
         // Validar email que no se repita.
         function validarEmail($email, $conexion)
         {
-            $sql = "SELECT * FROM usuario
+            $sql = "SELECT email FROM usuario
             WHERE email='$email'";
-
-            $result = mysqli_query($conexion, $sql);
-            if (mysqli_num_rows($result) > 0) return 1; // Ya existe
-            else return 0; // No existe
-        }
-        // Validar username que no se repita, pero pueda tener el mismo al modificarse.
-        function validarUsernameModificar($username, $id, $conexion)
-        {
-            $sql = "SELECT * FROM usuario
-            WHERE username='$username' and ( id != $id ) ";
 
             $result = mysqli_query($conexion, $sql);
             if (mysqli_num_rows($result) > 0) return 1; // Ya existe
@@ -110,39 +101,41 @@
 
             // Validación para campos vacíos y coincidencia de claves
             if (empty($Nombre)) array_push($errors, $errorNombre);
-            
+
             if (empty($Apellido)) array_push($errors, $errorApellido);
-            
+
             if (empty($Sexo)) array_push($errors, $errorSexo);
-            
+
             if (empty($Nacimiento)) array_push($errors, $errorNacimiento);
-            
+
             if (!empty($Nacimiento)) {
                 //
                 $fecha = new DateTime($Nacimiento);
                 $hoy = new DateTime();
                 $annos = $hoy->diff($fecha);
-                if($annos->y < 18) array_push($errors, $errorEdad);
+                if ($annos->y < 18) array_push($errors, $errorEdad);
             }
-            
+
             if (empty($Escuela)) array_push($errors, $errorEstudio);
-            
+
             if (empty($username)) array_push($errors, $errorUsername);
-            
+
             if (empty($Sobre_ti)) array_push($errors, $errorSobre_ti);
-            
+
             if (empty($Celular)) array_push($errors, $errorCelular);
-            
+
+            if (strlen($Celular) != 10) array_push($errors, $errorCelularInvalido);
+
             if (empty($email)) array_push($errors, $errorEmail);
-            
+
             if (empty($contrasena)) array_push($errors, $errorPassword);
-            
+
             if ($contrasena != $contrasena2) array_push($errors, $errorPassword2);
-            
+
             if (validarUsername($username, $conexion) == 1) array_push($errors, $errorUsuarioExiste);
-            
+
             if (validarEmail($email, $conexion) == 1) array_push($errors, $errorEmailExiste);
-            
+
             // Registra un usuario si todo sale bien.
             if (count($errors) == 0) {
                 // Las fotografías tiene el formato de: img/nombredeusuario#.extension
@@ -151,17 +144,28 @@
                 $foto3 = "img/" . $username . "3." . pathinfo($foto3, PATHINFO_EXTENSION);
 
                 $password = md5($contrasena); // Cifrar la contraseña antes de guardarla en la base de datos
-                $query = "INSERT INTO usuario (Nombre, Apellido, foto1, foto2, foto3, Sexo, Nacimiento, Escuela, username, Sobre_ti, Celular, Interes, email, contrasena) 
-					  VALUES('$Nombre', '$Apellido', '$foto1', '$foto2', '$foto3', '$Sexo', '$Nacimiento', '$Escuela', '$username', '$Sobre_ti', '$Celular', '$Interes', '$email', '$password')";
-                mysqli_query($conexion, $query);
+                //mysqli_query($conexion, $query);
 
                 if ((move_uploaded_file($_FILES['foto1']['tmp_name'], $foto1)) and (move_uploaded_file($_FILES['foto2']['tmp_name'], $foto2)) and (move_uploaded_file($_FILES['foto3']['tmp_name'], $foto3))) {
+                    // Si subió los archivos, inserto las cosas en mysql.
+                    $query = "INSERT INTO usuario (Nombre, Apellido, foto1, foto2, foto3, Sexo, Nacimiento, Escuela, username, Sobre_ti, Celular, Interes, email, contrasena) 
+                      VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    $sqlFun = $conexion->prepare($query);
+                    $sqlFun->bind_param('sssssissssiiss', $Nombre, $Apellido, $foto1, $foto2, $foto3, $Sexo, $Nacimiento, $Escuela, $username, $Sobre_ti, $Celular, $Interes, $email, $password);
+                    $sqlFun->execute();
+                    $query2 = $sqlFun->get_result();
                     // Identifico el usuario para poder crear una sesión con id.
-                    $sqlc = "SELECT * FROM usuario WHERE email='$email'";
-                    $resultc = mysqli_query($conexion, $sqlc);
-                    if (mysqli_num_rows($resultc) > 0) {
+                    $sqlc = "SELECT email, contrasena, username, id FROM usuario WHERE email=?";
 
-                        while ($row = mysqli_fetch_array($resultc)) { // En row obtengo los datos del usuario, necesito id.
+                    $sqlSesion = $conexion->prepare($sqlc);
+                    $sqlSesion->bind_param('s', $email);
+                    $sqlSesion->execute();
+                    $query = $sqlSesion->get_result();
+                    $totalFilas = $query->num_rows;
+
+                    if ($totalFilas > 0) {
+
+                        while ($row = mysqli_fetch_array($query)) { // En row obtengo los datos del usuario, necesito id.
                             if ($email  == $row['email'] && $password == $row['contrasena']) {
                                 $_SESSION['username'] = $row['username']; // Creo la sesión con username que proviene del while.
                                 $_SESSION['id'] = $row['id']; // Creo la sesión con id que proviene del while.
@@ -191,15 +195,27 @@
             // Si todo va bien...
             if (count($errors) == 0) {
                 $password = md5($contrasena); // Codificar contraseña antes de almacenarla.
-                $query = "SELECT * FROM usuario WHERE email='$email' AND contrasena='$password'";
-                $results = mysqli_query($conexion, $query);
+                $query = "SELECT email, contrasena FROM usuario WHERE email=? AND contrasena=?";
+                //
+                $sqlSesion = $conexion->prepare($query);
+                $sqlSesion->bind_param('ss', $email, $password);
+                $sqlSesion->execute();
+                $results = $sqlSesion->get_result();
+                $totalFilas = $results->num_rows;
+                //;
 
                 // Verificación si usuario y contraseña coinciden con los almacenados en la DB.
                 if (mysqli_num_rows($results) == 1) {
                     // Identifico el usuario para poder crear una sesión con id.
-                    $sqlc = "SELECT * FROM usuario WHERE email='$email'";
-                    $resultc = mysqli_query($conexion, $sqlc);
-                    if (mysqli_num_rows($resultc) > 0) {
+                    $sqlc = "SELECT email, contrasena, username, id FROM usuario WHERE email=?";
+                    //
+                    $sqlSesion2 = $conexion->prepare($sqlc);
+                    $sqlSesion2->bind_param('s', $email);
+                    $sqlSesion2->execute();
+                    $resultc = $sqlSesion2->get_result();
+                    $totalFilas = $resultc->num_rows;
+                    //
+                    if ($totalFilas > 0) {
 
                         while ($row = mysqli_fetch_array($resultc)) { // En row obtengo los datos del usuario, necesito id.
                             if ($email  == $row['email'] && $password == $row['contrasena']) {
@@ -207,7 +223,7 @@
                                 $_SESSION['id'] = $row['id']; // Creo la sesión con id que proviene del while.
                                 $_SESSION['success'] = $successError; // Indico que es correcta la sesión.
                                 mysqli_close($conexion);
-                                header('location: index.php'); // Redirijo hacia index.php.
+                                header('location:index.php'); // Redirijo hacia index.php.
                             }
                         }
                     }
@@ -227,7 +243,10 @@
 
             $query = "INSERT INTO megusta (id_usuario, quien_gusta) 
                               VALUES('$miId', '$valor')";
-            mysqli_query($conexion, $query);
+            
+            $sqlFun = $conexion->prepare($query);
+            $sqlFun->bind_param('ii', $miId, $valor);
+            $sqlFun->execute();
             header('location: encuentra_pareja.php'); // Redirijo hacia la misma pagina php para evitar reenvío de formulario.
         }
         // No me gusta
@@ -237,8 +256,11 @@
             $miId = $_SESSION['id'];
 
             $query = "INSERT INTO megusta (id_usuario, no_gusta) 
-                              VALUES('$miId', '$valor')";
-            mysqli_query($conexion, $query);
+                              VALUES(?, ?)";
+
+            $sqlFun = $conexion->prepare($query);
+            $sqlFun->bind_param('ii', $miId, $valor);
+            $sqlFun->execute();
             header('location: encuentra_pareja.php'); // Redirijo hacia la misma pagina php para evitar reenvío de formulario.
         }
         // Modificar mi perfil
@@ -272,6 +294,8 @@
                 if (empty($_FILES['foto1']['name'])) $foto1 = $row['foto1'];
                 if (empty($_FILES['foto2']['name'])) $foto2 = $row['foto2'];
                 if (empty($_FILES['foto3']['name'])) $foto3 = $row['foto3'];
+
+                if (strlen($Celular) != 10) array_push($errors, $errorCelularInvalido);
 
                 if (!empty($_FILES['foto1']['name'])) {
                     // Valido que sea una imagen y el tamaño no supere las 9mb.
@@ -352,7 +376,7 @@
                     else
                         echo "<div class='alert' role='alert'>Algo salió mal.</div>";
                 } else echo '<script type="text/javascript">
-                        alert("Las contraseñas no coinciden!");
+                        alert("Las contraseñas no coinciden o el número de celular ingresado es icorrecto!");
                         window.location.href="modificarPerfil.php?id=' . $miId . '";
                         </script>';
             }
