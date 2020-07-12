@@ -6,6 +6,7 @@ if (!isset($_SESSION['id'])) {
 ?>
 <!DOCTYPE html>
 <html>
+
 <?php
 include "head.html";
 ?>
