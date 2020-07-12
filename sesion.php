@@ -26,18 +26,18 @@
     $errorEdad = "<div class='alert' role='alert'> Solo se permiten mayores de 18 años </div>";
     $errorEstudio = "<div class='alert' role='alert'> Ingresa tu nivel de estudio acadmémico </div>";
     $errorUsername = "<div class='alert' role='alert'> Ingresa un nombre de usuario </div>";
+    $errorUsernameValido = "<div class='alert' role='alert'> Ingresa un nombre de usuario válido, solo letras y números </div>";
     $errorSobre_ti = "<div class='alert' role='alert'> Ingresa algo sobre ti </div>";
     $errorCelular = "<div class='alert' role='alert'> Ingresa tu número de celular </div>";
     $errorCelularInvalido = "<div class='alert' role='alert'> Ingresa un número de celular válido </div>";
     $errorInteres = "<div class='alert' role='alert'> Selecciona qué te interesa encontrar </div>";
     $errorEmail = "<div class='alert' role='alert'> Email es obligatorio! </div>";
-    $errorPassword = "<div class='alert' role='alert'> Contraseña es obligatoria! </div>";
+    $errorPasswordSeguridad = "<div class='alert' role='alert'> La contraseña es muy corta, escribe 8 caracteres mínimo! </div>";
     $errorPassword2 = "<div class='alert' role='alert'> Las contraseñas no coinciden :( </div>";
     $errorImagenoPeso = "<div class='alert' role='alert'> Archivo no permitido o excede el límite de peso permitido(9mb) </div>";
 
     // Verificaciones.
     $errorPassword = "<div class='alert' role='alert'> Contraseña es obligatoria! </div>";
-    $errorPassword2 = "<div class='alert' role='alert'> Las contraseñas no coinciden :( </div>";
     $errorUsuarioExiste = "<div class='alert' role='alert'> El usuario ingresado ya existe</div>";
     $errorEmailExiste = "<div class='alert' role='alert'> El correo ingresado ya existe</div>";
 
@@ -97,7 +97,7 @@
             $Interes = mysqli_real_escape_string($conexion, $_POST['Interes']);
             $email = mysqli_real_escape_string($conexion, $_POST['email']);
             $contrasena = mysqli_real_escape_string($conexion, $_POST['contrasena']);
-            $contrasena2 = mysqli_real_escape_string($conexion, $_POST['contrasena']);
+            $contrasena2 = mysqli_real_escape_string($conexion, $_POST['contrasena2']);
 
             // Validación para campos vacíos y coincidencia de claves
             if (empty($Nombre)) array_push($errors, $errorNombre);
@@ -119,6 +119,8 @@
             if (empty($Escuela)) array_push($errors, $errorEstudio);
 
             if (empty($username)) array_push($errors, $errorUsername);
+            if (!ctype_alnum($username)) array_push($errors, $errorUsernameValido);
+            
 
             if (empty($Sobre_ti)) array_push($errors, $errorSobre_ti);
 
@@ -129,6 +131,7 @@
             if (empty($email)) array_push($errors, $errorEmail);
 
             if (empty($contrasena)) array_push($errors, $errorPassword);
+            if (strlen($contrasena) < 8) array_push($errors, $errorPasswordSeguridad);
 
             if ($contrasena != $contrasena2) array_push($errors, $errorPassword2);
 
@@ -340,9 +343,10 @@
                 if (empty($Celular)) $Celular = mysqli_real_escape_string($conexion, $row['Celular']);
                 if (empty($Interes)) $Interes = mysqli_real_escape_string($conexion, $row['Interes']);
                 if (empty($contrasena) && empty($contrasena2)) {
-                    $password_1 = $row['contrasena'];
-                    $password_2 = $row['contrasena'];
+                    $contrasena = $row['contrasena'];
+                    $contrasena2 = $row['contrasena'];
                 }
+                if (strlen($contrasena) < 8) array_push($errors, $errorPasswordSeguridad);
                 // Hasta aquí están las validaciones sobre si hace o no modificaciones.
 
                 /* Validación para saber si el usuario nuevo coincide o no con uno existente.
@@ -355,17 +359,17 @@
                         array_push($errors, $errorPassword2);
                     } else {
                         $contrasena = md5(mysqli_real_escape_string($conexion, $contrasena));
-                        $contrasena2 = md5(mysqli_real_escape_string($conexion, $contrasena2));
+                        $contrasena2 = md5(mysqli_real_escape_string($conexion, $contrasena));
                     }
                 }
 
                 // Actualiza un usuario si todo sale bien.
                 if (count($errors) == 0) {
 
-                    $password = md5($contrasena); // Cifrar la contraseña antes de guardarla en la base de datos
+                    $password = $contrasena; // Cifrar la contraseña antes de guardarla en la base de datos
                     $sql2 = "UPDATE usuario SET Nombre = ?, Apellido = ?, foto1 = ?, foto2 = ?, foto3 = ?, Sexo = ?, Escuela = ?, Sobre_ti = ?, Celular = ?, Interes = ?, contrasena = ? WHERE id = ?";
                     $sqlFuncional = $conexion->prepare($sql2);
-                    $sqlFuncional->bind_param('sssssissiisi', $Nombre, $Apellido, $foto1, $foto2, $foto3, $Sexo, $Escuela, $Sobre_ti, $Celular, $Interes, $password_1, $miId);
+                    $sqlFuncional->bind_param('sssssissiisi', $Nombre, $Apellido, $foto1, $foto2, $foto3, $Sexo, $Escuela, $Sobre_ti, $Celular, $Interes, $password, $miId);
                     $sqlFuncional->execute();
 
                     if ($sqlFuncional)
@@ -376,7 +380,7 @@
                     else
                         echo "<div class='alert' role='alert'>Algo salió mal.</div>";
                 } else echo '<script type="text/javascript">
-                        alert("Las contraseñas no coinciden o el número de celular ingresado es icorrecto!");
+                        alert("Ocurrieron algunos de los siguientes errores:Las contraseñas no coinciden, el número de celular ingresado es icorrecto o la contraseña es demasiado corta.");
                         window.location.href="modificarPerfil.php?id=' . $miId . '";
                         </script>';
             }
