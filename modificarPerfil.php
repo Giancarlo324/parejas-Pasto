@@ -105,6 +105,8 @@ include "head.html";
                                             <span class="checkmark"></span>
                                         </label>
                                     </p>
+                                    <label>Contraseña actual</label>
+                                    <input type="password" placeholder="Escribe tu contraseña actual" name="password_actual">
                                     <label>Contraseña nueva</label>
                                     <input type="password" placeholder="Escribe tu nueva contraseña" name="password_1">
                                     <label>Confirmar contraseña nueva</label>

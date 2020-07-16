@@ -156,7 +156,7 @@ include "head.html";
                 $sqlFuncional->bind_param('iii', $myId, $id_quien_gusta, $id_quien_gusta);
                 $sqlFuncional->execute();
                 $resulta = $sqlFuncional->get_result();
-                
+
                 $totalFilas = $resulta->num_rows;
                 if ($totalFilas == 0) { // Si no le he dado me gusta, hago que aparezcan sus datos.
             ?>
@@ -213,9 +213,10 @@ include "head.html";
                                     <div>
                                         <form method="POST" action="encuentra_pareja.php">
 
-                                            <button type="submit" name="boton" value="<?php echo $fila3['id']; ?>">Me gusta</button>
-
-                                            <button type="submit" name="boton2" value="<?php echo $fila3['id']; ?>">No me gusta</button>
+                                            <div>
+                                                <button type="submit" name="boton" value="<?php echo $fila3['id']; ?>">Me gusta</button>
+                                                <button type="submit" name="boton2" value="<?php echo $fila3['id']; ?>">No me gusta</button>
+                                            </div>
                                             <br>
                                         </form>
                                     </div>

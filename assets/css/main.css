@@ -1615,7 +1615,7 @@ input, select, textarea {
 .responsive_pareja {
 	width: 100%;
 	height: auto;
-	min-width: 380px;
+	min-width: 280px;
 	max-width: 380px;
 	min-height: 410px;
 	max-height: 410px;
@@ -2731,6 +2731,7 @@ input, select, textarea {
 				display: block;
 				padding: 1em 0 1em 0;
 				width: 100%;
+				margin-bottom: 15px;
 			}
 
 		/* Actions */

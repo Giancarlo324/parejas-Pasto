@@ -34,6 +34,7 @@
     $errorEmail = "<div class='alert' role='alert'> Email es obligatorio! </div>";
     $errorPasswordSeguridad = "<div class='alert' role='alert'> La contraseña es muy corta, escribe 8 caracteres mínimo! </div>";
     $errorPassword2 = "<div class='alert' role='alert'> Las contraseñas no coinciden :( </div>";
+    $errorPasswordActual = "<div class='alert' role='alert'> Tu contraseña actual no es correcta </div>";
     $errorImagenoPeso = "<div class='alert' role='alert'> Archivo no permitido o excede el límite de peso permitido(9mb) </div>";
 
     // Verificaciones.
@@ -120,7 +121,7 @@
 
             if (empty($username)) array_push($errors, $errorUsername);
             if (!ctype_alnum($username)) array_push($errors, $errorUsernameValido);
-            
+
 
             if (empty($Sobre_ti)) array_push($errors, $errorSobre_ti);
 
@@ -246,7 +247,7 @@
 
             $query = "INSERT INTO megusta (id_usuario, quien_gusta) 
                               VALUES('$miId', '$valor')";
-            
+
             $sqlFun = $conexion->prepare($query);
             $sqlFun->bind_param('ii', $miId, $valor);
             $sqlFun->execute();
@@ -288,6 +289,7 @@
                 $Celular = mysqli_real_escape_string($conexion, $_POST['Celular']);
 
                 $Interes = mysqli_real_escape_string($conexion, $_POST['Interes']);
+                $contrasenaActual = mysqli_real_escape_string($conexion, $_POST['password_actual']);
                 $contrasena = mysqli_real_escape_string($conexion, $_POST['password_1']);
                 $contrasena2 = mysqli_real_escape_string($conexion, $_POST['password_2']);
 
@@ -358,8 +360,10 @@
                     if ($contrasena != $contrasena2) {
                         array_push($errors, $errorPassword2);
                     } else {
-                        $contrasena = md5(mysqli_real_escape_string($conexion, $contrasena));
-                        $contrasena2 = md5(mysqli_real_escape_string($conexion, $contrasena));
+                        if ($row['contrasena'] == md5($contrasenaActual)) {
+                            $contrasena = md5(mysqli_real_escape_string($conexion, $contrasena));
+                            $contrasena2 = md5(mysqli_real_escape_string($conexion, $contrasena));
+                        } else array_push($errors, $errorPasswordActual);
                     }
                 }
 
@@ -380,7 +384,7 @@
                     else
                         echo "<div class='alert' role='alert'>Algo salió mal.</div>";
                 } else echo '<script type="text/javascript">
-                        alert("Ocurrieron algunos de los siguientes errores:Las contraseñas no coinciden, el número de celular ingresado es icorrecto o la contraseña es demasiado corta.");
+                        alert("Ocurrieron algunos de los siguientes errores:Las contraseñas no coinciden, el número de celular ingresado es icorrecto, tu contraseña actual ingresada es incorrecta o la contraseña es demasiado corta.");
                         window.location.href="modificarPerfil.php?id=' . $miId . '";
                         </script>';
             }
