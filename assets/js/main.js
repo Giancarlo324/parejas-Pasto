@@ -58,3 +58,45 @@
 				});
 
 })(jQuery);
+
+$('#submitModificarPerfil').click(function() {
+	var form = new FormData($('#formularioModificarPerfil')[0]);
+	$.ajax({
+		url: 'sesion.php',
+		type: 'POST',
+		data: form,
+		processData: false,
+		contentType: false,
+		success: function(res) {
+			$('#respuesta').html(res);
+		}
+	});
+});
+
+$('#submitLogin').click(function() {
+	var form = new FormData($('#formularioLogin')[0]);
+	$.ajax({
+		url: 'sesion.php',
+		type: 'POST',
+		data: form,
+		processData: false,
+		contentType: false,
+		success: function(res) {
+			$('#respuesta').html(res);
+		}
+	});
+});
+
+$('#submitRegister').click(function() {
+	var form = new FormData($('#formularioRegister')[0]);
+	$.ajax({
+		url: 'sesion.php',
+		type: 'POST',
+		data: form,
+		processData: false,
+		contentType: false,
+		success: function(res) {
+			$('#respuesta').html(res);
+		}
+	});
+});

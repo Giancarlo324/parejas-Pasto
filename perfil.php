@@ -1,5 +1,8 @@
 <?php
 include('sesion.php');
+if (!isset($_SESSION['id'])) {
+   header('location: login.php');
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -102,10 +105,10 @@ include "head.html";
       <?php
                break;
             }
-         }
+         } echo "<div class='alert' role='alert'>No tienes permisos para ver esta pagina!</div>";
          mysqli_close($conexion);
       } else {
-         echo "<div class='container'>Ha ocurrido un error!</div>";
+         echo "<div class='alert' role='alert'>Ha ocurrido un error!</div>";
       }
       ?>
    </div>

@@ -21,20 +21,19 @@ include "head.html";
                 <?php
                 if ($conexion) {
                 ?>
-                    <form method="post" enctype="multipart/form-data" action="register.php">
-                        <?php include('errors.php'); ?>
+                    <form id="formularioRegister" method="post" enctype="multipart/form-data" action="register.php">
                         <div>
                             <label>Nombre</label>
                             <input type="text" placeholder="Escribe tu nombre" name="Nombre" value="<?php echo $Nombre; ?>">
                             <label>Apellido</label>
                             <input type="text" placeholder="Escribe tu apellido" name="Apellido" value="<?php echo $Apellido; ?>">
                             <p>
-                            <label>Escoge tus tres mejores fotografías (tamaño recomendado: 410px alto * 380px ancho y peso max:9mb)</label>
+                                <label>Escoge tus tres mejores fotografías (tamaño recomendado: 410px alto * 380px ancho y peso max:9mb)</label>
                                 <label style="text-align: left;">Foto 1: <input type="file" name="foto1" id="foto1" accept="image/*" require></label>
                                 <label style="text-align: left;">Foto 2: <input type="file" name="foto2" id="foto2" accept="image/*" require></label>
                                 <label style="text-align: left;">Foto 3: <input type="file" name="foto3" id="foto3" accept="image/*" require></label>
                             </p>
-                            
+
                             <p>
                                 <label>Sexo</label>
 
@@ -55,7 +54,7 @@ include "head.html";
                             <label>Nombre de usuario</label>
                             <input type="text" placeholder="Escribe tu nombre de usuario" name="username" value="<?php echo $username; ?>">
                             <label>Sobre ti</label>
-                            <textarea type="text" placeholder="Describe cuales son tus gustos, que buscas, qué haces..." name="Sobre_ti" value="<?php echo $Sobre_ti; ?>" placeholder="Escribe algo interesante sobre ti..."></textarea>
+                            <textarea type="text" placeholder="Describe cuales son tus gustos, que buscas, qué haces..." name="Sobre_ti" value="<?php echo $Sobre_ti; ?>"></textarea>
                             <label>Celular</label>
                             <input type="tel" maxlength="10" placeholder="Num. Celular" name="Celular" value="<?php echo $Celular; ?>">
                             <p>
@@ -82,9 +81,12 @@ include "head.html";
                             <label>Confirmar contraseña</label>
                             <input type="password" placeholder="Confirma tu contraseña" name="contrasena2">
                         </div>
+                        <div id="respuesta">
+                            <?php include('errors.php'); ?>
+                        </div>
                         <p>
                             <br>
-                            <button type="submit" name="reg_user">Registrar</button>
+                            <button type="submit" id="submitRegister" name="reg_user">Registrar</button>
                         </p>
                         <p style="font-size: 25px;">
                             ¿Ya estás registrado? <br><a href="login.php"><strong>Iniciar sesión</strong></a>
@@ -92,7 +94,7 @@ include "head.html";
                     </form>
                 <?php
                 } else {
-                    echo "<div class='container'>Ha ocurrido un error!</div>";
+                    echo "<div class='alert' role='alert'>Ha ocurrido un error!</div>";
                 }
                 ?>
             </div>

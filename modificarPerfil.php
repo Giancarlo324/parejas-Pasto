@@ -40,7 +40,7 @@ include "head.html";
                             $img2 = $row['foto2'];
                             $img3 = $row['foto3'];
                 ?>
-                            <form id="formulario" method="post" enctype="multipart/form-data" action="modificarPerfil.php?id=<?php echo $miId ?>">
+                            <form id="formularioModificarPerfil" method="post" enctype="multipart/form-data" action="modificarPerfil.php?id=<?php echo $miId ?>">
                                 <div>
                                     <label>Nombre</label>
                                     <input type="text" placeholder="Escribe tu nombre" name="Nombre" value="<?php echo $row['Nombre']; ?>">
@@ -113,7 +113,7 @@ include "head.html";
                                 </div>
                                 <br>
                                 <p>
-                                    <input type="submit" id="submit" name="editar" value="Actualizar" />
+                                    <input type="submit" id="submitModificarPerfil" name="editar" value="Actualizar" />
                                 </p>
                             </form>
                             <div id="respuesta">
@@ -130,22 +130,6 @@ include "head.html";
             </div>
         </div>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-        $('#submit').click(function() {
-            var form = new FormData($('#formulario')[0]);
-            $.ajax({
-                url: 'sesion.php',
-                type: 'POST',
-                data: form,
-                processData: false,
-                contentType: false,
-                success: function(res) {
-                    $('#respuesta').html(res);
-                }
-            });
-        });
-    </script>
     <?php
     include "footer.php";
     ?>

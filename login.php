@@ -23,22 +23,24 @@ endif;
 				<?php
 				if ($conexion) {
 				?>
-					<form method="post" action="login.php">
-						<?php include('errors.php'); ?>
+					<form id="formularioLogin" method="post" action="login.php">
 						<div class="form-group">
 							<label>Correo electrónico</label>
-							<input type="email" placeholder="Escribe tu correo electrónico"  name="email">
+							<input type="email" placeholder="Escribe tu correo electrónico" name="email">
 							<label>Contraseña</label>
-							<input type="password" placeholder="Escribe tu contraseña"  name="contrasena">
+							<input type="password" placeholder="Escribe tu contraseña" name="contrasena">
 						</div>
 						<p>
 							<br>
-							<button type="submit" class="btn btn-primary" name="login_user">Iniciar sesión</button>
+							<button type="submit" id="submitLogin" class="btn btn-primary" name="login_user">Iniciar sesión</button>
 						</p>
 						<p style="font-size: 25px;">
 							¿No estás registrado? <br><a href="register.php">¡Regístrate!</a>
 						</p>
 					</form>
+					<div id="respuesta">
+						<?php include('errors.php'); ?>
+					</div>
 				<?php
 				} else {
 					echo "<div class='container'>Ha ocurrido un error!</div>";
@@ -48,8 +50,8 @@ endif;
 		</div>
 	</div>
 	<?php
-    include "footer.php";
-    ?>
+	include "footer.php";
+	?>
 </body>
 
 </html>
