@@ -40,8 +40,7 @@ include "head.html";
                             $img2 = $row['foto2'];
                             $img3 = $row['foto3'];
                 ?>
-                            <form method="post" enctype="multipart/form-data" action="modificarPerfil.php?id=<?php echo $miId ?>">
-                                <?php include('errors.php'); ?>
+                            <form id="formulario" method="post" enctype="multipart/form-data" action="modificarPerfil.php?id=<?php echo $miId ?>">
                                 <div>
                                     <label>Nombre</label>
                                     <input type="text" placeholder="Escribe tu nombre" name="Nombre" value="<?php echo $row['Nombre']; ?>">
@@ -49,15 +48,15 @@ include "head.html";
                                     <input type="text" placeholder="Escribe tu apellido" name="Apellido" value="<?php echo $row['Apellido'];; ?>">
                                     <p>
                                         <label>Escoge tus tres mejores fotografías (tamaño recomendado: 410px alto * 380px ancho y peso max:9mb)</label>
-                                        <input type="file"  name="foto1" id="foto1" accept="image/*" />
+                                        <input type="file" name="foto1" id="foto1" accept="image/*" />
                                         <?php echo "<img src='$img1' style='width:150px; height:160px;'" ?>
                                     </p>
                                     <p>
-                                        <input type="file"  name="foto2" id="foto2" accept="image/*" />
+                                        <input type="file" name="foto2" id="foto2" accept="image/*" />
                                         <?php echo "<img src='$img2' style='width:150px; height:160px;'" ?>
                                     </p>
                                     <p>
-                                        <input type="file"  name="foto3" id="foto3" accept="image/*" />
+                                        <input type="file" name="foto3" id="foto3" accept="image/*" />
                                         <?php echo "<img src='$img3' style='width:150px; height:160px;'" ?>
                                     </p>
 
@@ -105,18 +104,21 @@ include "head.html";
                                             <span class="checkmark"></span>
                                         </label>
                                     </p>
-                                    <label>Contraseña actual</label>
-                                    <input type="password" placeholder="Escribe tu contraseña actual" name="password_actual">
                                     <label>Contraseña nueva</label>
                                     <input type="password" placeholder="Escribe tu nueva contraseña" name="password_1">
                                     <label>Confirmar contraseña nueva</label>
                                     <input type="password" placeholder="Confirma tu nueva contraseña" name="password_2">
+                                    <label>Ingresa tu actual contraseña para realizar tus cambios</label>
+                                    <input type="password" placeholder="Escribe tu contraseña actual" name="password_actual">
                                 </div>
                                 <br>
                                 <p>
-                                    <input type="submit" name="editar" value="Actualizar" />
+                                    <input type="submit" id="submit" name="editar" value="Actualizar" />
                                 </p>
                             </form>
+                            <div id="respuesta">
+                                <?php include('errors.php'); ?>
+                            </div>
                 <?php
                         }
                     } else echo "<div class=''>No tienes permiso para ver esta pagina!</div>";
@@ -128,6 +130,22 @@ include "head.html";
             </div>
         </div>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $('#submit').click(function() {
+            var form = new FormData($('#formulario')[0]);
+            $.ajax({
+                url: 'sesion.php',
+                type: 'POST',
+                data: form,
+                processData: false,
+                contentType: false,
+                success: function(res) {
+                    $('#respuesta').html(res);
+                }
+            });
+        });
+    </script>
     <?php
     include "footer.php";
     ?>

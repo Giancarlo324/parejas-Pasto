@@ -272,6 +272,7 @@
             $miId = $_SESSION['id'];
             $sql = "SELECT * FROM usuario WHERE id = $miId";
             $query = mysqli_query($conexion, $sql);
+            $cambiar_contrasena = false;
 
             $permitidos = array("image/jpg", "image/jpeg", "image/png", "image/jpeg", "image/bmp");
             $limite_peso_b = 9437184; //9mb
@@ -292,7 +293,6 @@
                 $contrasenaActual = mysqli_real_escape_string($conexion, $_POST['password_actual']);
                 $contrasena = mysqli_real_escape_string($conexion, $_POST['password_1']);
                 $contrasena2 = mysqli_real_escape_string($conexion, $_POST['password_2']);
-
 
                 if (empty($Nombre)) $Nombre = mysqli_real_escape_string($conexion, $row['Nombre']);
                 if (empty($Apellido)) $Apellido = mysqli_real_escape_string($conexion, $row['Apellido']);
@@ -344,11 +344,11 @@
                 if (empty($Celular)) $Celular = mysqli_real_escape_string($conexion, $row['Celular']);
                 if (empty($Celular)) $Celular = mysqli_real_escape_string($conexion, $row['Celular']);
                 if (empty($Interes)) $Interes = mysqli_real_escape_string($conexion, $row['Interes']);
-                if (empty($contrasena) && empty($contrasena2)) {
+                if (empty($contrasena)) {
+                    $cambiar_contrasena = true;
                     $contrasena = $row['contrasena'];
                     $contrasena2 = $row['contrasena'];
                 }
-                if (strlen($contrasena) < 8) array_push($errors, $errorPasswordSeguridad);
                 // Hasta aquí están las validaciones sobre si hace o no modificaciones.
 
                 /* Validación para saber si el usuario nuevo coincide o no con uno existente.
@@ -356,15 +356,18 @@
                     array_push($errors, $errorUsuarioExiste);
                 }*/
                 // Validación para saber si cambia la contraseña
-                if (!empty($contrasena)) {
-                    if ($contrasena != $contrasena2) {
-                        array_push($errors, $errorPassword2);
-                    } else {
-                        if ($row['contrasena'] == md5($contrasenaActual)) {
-                            $contrasena = md5(mysqli_real_escape_string($conexion, $contrasena));
-                            $contrasena2 = md5(mysqli_real_escape_string($conexion, $contrasena));
-                        } else array_push($errors, $errorPasswordActual);
+                if (!empty($contrasena) && !empty($contrasena2)) {
+                    if (strlen($contrasena) < 8) array_push($errors, $errorPasswordSeguridad);
+                    if ($contrasena != $contrasena2) array_push($errors, $errorPassword2);
+                    if (!$cambiar_contrasena) {
+                        echo "si";
+                        $contrasena = md5($contrasena);
+                        $contrasena2 = md5($contrasena2);
                     }
+                }
+                // Escribir contraseña obligatoria al actualizar datos.
+                if (md5($contrasenaActual) != $row['contrasena'] || empty($contrasenaActual)) {
+                    array_push($errors, $errorPasswordActual);
                 }
 
                 // Actualiza un usuario si todo sale bien.
@@ -376,17 +379,18 @@
                     $sqlFuncional->bind_param('sssssissiisi', $Nombre, $Apellido, $foto1, $foto2, $foto3, $Sexo, $Escuela, $Sobre_ti, $Celular, $Interes, $password, $miId);
                     $sqlFuncional->execute();
 
-                    if ($sqlFuncional)
+                    /*if ($sqlFuncional) echo "<div class='alert' role='alert'>Bien.</div>";
                         echo '<script type="text/javascript">
                         alert("Datos actualizados!");
                         window.location.href="modificarPerfil.php?id=' . $miId . '";
                         </script>';
                     else
                         echo "<div class='alert' role='alert'>Algo salió mal.</div>";
-                } else echo '<script type="text/javascript">
+                } else echo "mal";/* echo '<script type="text/javascript">
                         alert("Ocurrieron algunos de los siguientes errores:Las contraseñas no coinciden, el número de celular ingresado es icorrecto, tu contraseña actual ingresada es incorrecta o la contraseña es demasiado corta.");
                         window.location.href="modificarPerfil.php?id=' . $miId . '";
-                        </script>';
+                        </script>';*/
+                }
             }
         }
     }
