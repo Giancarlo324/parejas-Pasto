@@ -127,7 +127,7 @@
 
             if (empty($Celular)) array_push($errors, $errorCelular);
 
-            if (strlen($Celular) != 10) array_push($errors, $errorCelularInvalido);
+            if (strlen($Celular) != 10 || $Celular <=0) array_push($errors, $errorCelularInvalido);
 
             if (empty($email)) array_push($errors, $errorEmail);
 
@@ -300,7 +300,7 @@
                 if (empty($_FILES['foto2']['name'])) $foto2 = $row['foto2'];
                 if (empty($_FILES['foto3']['name'])) $foto3 = $row['foto3'];
 
-                if (strlen($Celular) != 10) array_push($errors, $errorCelularInvalido);
+                if (strlen($Celular) != 10 || $Celular <=0) array_push($errors, $errorCelularInvalido);
 
                 if (!empty($_FILES['foto1']['name'])) {
                     // Valido que sea una imagen y el tamaño no supere las 9mb.
@@ -360,7 +360,6 @@
                     if (strlen($contrasena) < 8) array_push($errors, $errorPasswordSeguridad);
                     if ($contrasena != $contrasena2) array_push($errors, $errorPassword2);
                     if (!$cambiar_contrasena) {
-                        echo "si";
                         $contrasena = md5($contrasena);
                         $contrasena2 = md5($contrasena2);
                     }

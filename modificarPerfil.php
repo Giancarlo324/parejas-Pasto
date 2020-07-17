@@ -64,12 +64,12 @@ include "head.html";
                                         <label>Sexo</label>
 
                                         <label class="miradio">Hombre
-                                            <input type="radio" name="Sexo" value="1" <?php if ($Sexo == "1") echo "checked";
+                                            <input type="radio" name="Sexo" value="1" <?php if ($Sexo == "1") echo "checked='checked'";
                                                                                         echo $row['Sexo'] == 1 ? 'checked' : '' ?>>
                                             <span class="checkmark"></span>
                                         </label>
                                         <label class="miradio">Mujer
-                                            <input type="radio" name="Sexo" value="2" <?php if ($Sexo == "2") echo "checked";
+                                            <input type="radio" name="Sexo" value="2" <?php if ($Sexo == "2") echo "checked='checked'";
                                                                                         echo $row['Sexo'] == 2 ? 'checked' : '' ?>>
                                             <span class="checkmark"></span>
                                         </label>
@@ -89,17 +89,17 @@ include "head.html";
                                         <label>Me interesa</label>
 
                                         <label class="miradio">Hombres
-                                            <input type="radio" name="Interes" value="3" <?php if ($Interes == "3") echo "checked";
+                                            <input type="radio" name="Interes" value="3" <?php if ($Interes == "3") echo "checked='checked'";
                                                                                             echo $row['Interes'] == 3 ? 'checked' : '' ?>>
                                             <span class="checkmark"></span>
                                         </label>
                                         <label class="miradio">Mujeres
-                                            <input type="radio" name="Interes" value="4" <?php if ($Interes == "4") echo "checked";
+                                            <input type="radio" name="Interes" value="4" <?php if ($Interes == "4") echo "checked='checked'";
                                                                                             echo $row['Interes'] == 4 ? 'checked' : '' ?>>
                                             <span class="checkmark"></span>
                                         </label>
                                         <label class="miradio">Hombres y mujeres
-                                            <input type="radio" name="Interes" value="5" <?php if ($Interes == "5") echo "checked";
+                                            <input type="radio" name="Interes" value="5" <?php if ($Interes == "5") echo "checked='checked'";
                                                                                             echo $row['Interes'] == 5 ? 'checked' : '' ?>>
                                             <span class="checkmark"></span>
                                         </label>
