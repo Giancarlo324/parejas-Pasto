@@ -351,10 +351,6 @@
                 }
                 // Hasta aquí están las validaciones sobre si hace o no modificaciones.
 
-                /* Validación para saber si el usuario nuevo coincide o no con uno existente.
-                if (validarUsernameModificar($username, $miId, $conexion) == 1) {
-                    array_push($errors, $errorUsuarioExiste);
-                }*/
                 // Validación para saber si cambia la contraseña
                 if (!empty($contrasena) && !empty($contrasena2)) {
                     if (strlen($contrasena) < 8) array_push($errors, $errorPasswordSeguridad);
@@ -377,18 +373,6 @@
                     $sqlFuncional = $conexion->prepare($sql2);
                     $sqlFuncional->bind_param('sssssissiisi', $Nombre, $Apellido, $foto1, $foto2, $foto3, $Sexo, $Escuela, $Sobre_ti, $Celular, $Interes, $password, $miId);
                     $sqlFuncional->execute();
-
-                    /*if ($sqlFuncional) echo "<div class='alert' role='alert'>Bien.</div>";
-                        echo '<script type="text/javascript">
-                        alert("Datos actualizados!");
-                        window.location.href="modificarPerfil.php?id=' . $miId . '";
-                        </script>';
-                    else
-                        echo "<div class='alert' role='alert'>Algo salió mal.</div>";
-                } else echo "mal";/* echo '<script type="text/javascript">
-                        alert("Ocurrieron algunos de los siguientes errores:Las contraseñas no coinciden, el número de celular ingresado es icorrecto, tu contraseña actual ingresada es incorrecta o la contraseña es demasiado corta.");
-                        window.location.href="modificarPerfil.php?id=' . $miId . '";
-                        </script>';*/
                 }
             }
         }
