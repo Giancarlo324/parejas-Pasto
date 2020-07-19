@@ -105,7 +105,7 @@ include "head.html";
       <?php
                break;
             }
-         } echo "<div class='alert' role='alert'>No tienes permisos para ver esta pagina!</div>";
+         } else echo "<div class='alert' role='alert'>No tienes permisos para ver esta pagina!</div>";
          mysqli_close($conexion);
       } else {
          echo "<div class='alert' role='alert'>Ha ocurrido un error!</div>";
